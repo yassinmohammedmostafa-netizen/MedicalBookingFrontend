@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDeleteDoctor, useGetAdminDoctors, useApproveDoctor } from "@workspace/api-client-react";
+import { useDeleteDoctor, useGetAdminDoctors, useApproveDoctor } from "../../../api-client-react/src/index.js";
 import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

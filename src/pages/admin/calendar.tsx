@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, isToday, isBefore, startOfDay } from "date-fns";
-import { useGetCalendarAppointments } from "@workspace/api-client-react";
+import { useGetCalendarAppointments } from "../../../api-client-react/src/index.js";
 import { Layout } from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

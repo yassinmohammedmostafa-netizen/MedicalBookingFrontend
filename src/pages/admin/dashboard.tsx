@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useGetAdminStats } from "@workspace/api-client-react";
+import { useGetAdminStats } from "../../../api-client-react/src/index.js";
 import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

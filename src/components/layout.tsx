@@ -8,7 +8,7 @@ import {
   LogOut, Activity, Menu, X,
   LayoutDashboard, Calendar, Clock, Users, ClipboardList, Stethoscope, UserCircle, MessageSquare
 } from "lucide-react";
-import { useLogoutUser, useUpdateProfile } from "@workspace/api-client-react";
+import { useLogoutUser, useUpdateProfile } from "../../api-client-react/src/index.js";
 import { useQueryClient } from "@tanstack/react-query";
 import type { Lang } from "@/lib/language";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

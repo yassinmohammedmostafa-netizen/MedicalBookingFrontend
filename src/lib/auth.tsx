@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useGetMe, getGetMeQueryKey, User } from '@workspace/api-client-react';
+import { useGetMe, getGetMeQueryKey, User } from '../../api-client-react/src/index.js';
 import { useLanguage } from '@/lib/language';
 import type { Lang } from '@/lib/language';
 

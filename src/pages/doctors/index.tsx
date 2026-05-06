@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link, useSearch } from "wouter";
-import { useGetDoctors } from "@workspace/api-client-react";
+import { useGetDoctors } from "../../../api-client-react/src/index.js";
 import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

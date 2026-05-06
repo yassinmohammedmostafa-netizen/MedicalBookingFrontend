@@ -7,7 +7,7 @@ import {
   useCreateAppointment,
   useGetDoctorReviews,
   getGetAppointmentsQueryKey
-} from "@workspace/api-client-react";
+} from "../../../api-client-react/src/index.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";

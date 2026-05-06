@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { Clock, XCircle, ArrowRight, LogOut } from "lucide-react";
-import { useGetDoctorProfile, getGetDoctorProfileQueryKey } from "@workspace/api-client-react";
+import { useGetDoctorProfile, getGetDoctorProfileQueryKey } from "../../../api-client-react/src/index.js";
 
 export default function DoctorStatus() {
   const { user, logout } = useAuth();

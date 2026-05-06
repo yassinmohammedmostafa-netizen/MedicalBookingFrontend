@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth";
 import { useLanguage } from "@/lib/language";
 import { useT } from "@/lib/translations";
-import { useUpdateProfile, useChangePassword, useUpdateDoctorProfile, useGetDoctorProfile, getGetDoctorProfileQueryKey } from "@workspace/api-client-react";
+import { useUpdateProfile, useChangePassword, useUpdateDoctorProfile, useGetDoctorProfile, getGetDoctorProfileQueryKey } from "../../api-client-react/src/index.js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";

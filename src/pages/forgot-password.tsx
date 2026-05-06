@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useForgotPassword } from "@workspace/api-client-react";
+import { useForgotPassword } from "../../api-client-react/src/index.js";
 import { useT } from "@/lib/translations";
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";

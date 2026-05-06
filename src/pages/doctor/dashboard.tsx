@@ -3,7 +3,7 @@ import {
   useGetDoctorDashboard,
   useUpdateAppointmentStatus,
   getGetDoctorDashboardQueryKey
-} from "@workspace/api-client-react";
+} from "../../../api-client-react/src/index.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

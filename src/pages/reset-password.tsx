@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useResetPassword } from "@workspace/api-client-react";
+import { useResetPassword } from "../../api-client-react/src/index.js";
 import { useT } from "@/lib/translations";
 import { PasswordStrengthMeter } from "@/components/password-strength-meter";
 import { Layout } from "@/components/layout";
