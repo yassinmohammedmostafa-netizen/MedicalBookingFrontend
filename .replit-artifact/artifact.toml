@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Esaal - Medical Appointment Platform"
+version = "1.0.0"
+id = "artifacts/esaal"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21082
+
+[services.development]
+run = "pnpm --filter @workspace/esaal run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/esaal", "run", "build" ]
+publicDir = "artifacts/esaal/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21082"
+BASE_PATH = "/"
