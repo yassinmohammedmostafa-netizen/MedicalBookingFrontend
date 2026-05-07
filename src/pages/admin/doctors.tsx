@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useDeleteDoctor, useGetAdminDoctors, useApproveDoctor, customFetch } from "../../../api-client-react/src/index.js";
 import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -104,6 +104,7 @@ export default function AdminDoctors() {
   };
 
   const [editingDoctor, setEditingDoctor] = useState<any | null>(null);
+  const [viewingReviewsDoctor, setViewingReviewsDoctor] = useState<any | null>(null);
   const [editForm, setEditForm] = useState({ price: 0, specialty: [] as string[] });
 
   const handleEditDoctor = (doctor: any) => {
@@ -128,6 +129,15 @@ export default function AdminDoctors() {
       toast({ title: t("admin_doctorUpdateError") || "Failed to update doctor", variant: "destructive" });
     }
   };
+
+  const { data: doctorReviews, isLoading: isLoadingReviews } = useQuery<any[]>({
+    queryKey: ["/api/admin/reviews", { doctorId: viewingReviewsDoctor?.id }],
+    queryFn: async () => {
+      if (!viewingReviewsDoctor) return [];
+      return customFetch<any[]>(`/api/admin/reviews?doctorId=${viewingReviewsDoctor.id}`);
+    },
+    enabled: !!viewingReviewsDoctor,
+  });
 
   return (
     <Layout>
@@ -411,6 +421,15 @@ export default function AdminDoctors() {
                           </Button>
 
                           <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 text-amber-600 border-amber-200 hover:bg-amber-50"
+                            onClick={() => setViewingReviewsDoctor(doctor)}
+                          >
+                            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                          </Button>
+
+                          <Button
                             variant="destructive"
                             size="sm"
                             onClick={() => handleDelete(doctor.id, `${doctor.firstName} ${doctor.lastName}`)}
@@ -479,6 +498,72 @@ export default function AdminDoctors() {
             <DialogFooter>
               <Button variant="outline" onClick={() => setEditingDoctor(null)}>{t("common_cancel")}</Button>
               <Button onClick={handleSaveEdit}>{t("common_save")}</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Doctor Reviews Dialog */}
+        <Dialog open={!!viewingReviewsDoctor} onOpenChange={(open) => !open && setViewingReviewsDoctor(null)}>
+          <DialogContent className="max-w-3xl max-h-[85vh] flex flex-col p-0 overflow-hidden">
+            <DialogHeader className="p-6 border-b">
+              <DialogTitle className="flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-primary" />
+                {t("admin_doctorReviews") || "Doctor Reviews"}: {viewingReviewsDoctor?.firstName} {viewingReviewsDoctor?.lastName}
+              </DialogTitle>
+            </DialogHeader>
+            
+            <ScrollArea className="flex-1 p-6">
+              {isLoadingReviews ? (
+                <div className="flex justify-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              ) : !doctorReviews || doctorReviews.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground italic">
+                  {t("admin_noReviewsFound") || "No reviews found for this doctor."}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {doctorReviews.map((review) => (
+                    <Card key={review.appointmentId} className="border-muted bg-muted/10">
+                      <CardContent className="p-4 space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div className="flex items-center gap-2">
+                            <div className="bg-primary/10 p-1.5 rounded-full">
+                              <UserIcon className="w-4 h-4 text-primary" />
+                            </div>
+                            <span className="font-semibold text-sm">{review.patientName}</span>
+                          </div>
+                          <Badge variant={review.isReviewApproved ? "default" : "outline"} className={review.isReviewApproved ? "bg-emerald-100 text-emerald-800 border-emerald-200" : "bg-amber-100 text-amber-800 border-amber-200"}>
+                            {review.isReviewApproved ? (t("admin_statusApproved") || "Approved") : (t("admin_statusPending") || "Pending")}
+                          </Badge>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          {[1, 2, 3, 4, 5].map(star => (
+                            <Star
+                              key={star}
+                              className={`w-4 h-4 ${star <= review.patientRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20"}`}
+                            />
+                          ))}
+                          <span className="ms-2 text-xs text-muted-foreground">
+                            {new Date(review.createdAt).toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US", { year: 'numeric', month: 'short', day: 'numeric' })}
+                          </span>
+                        </div>
+
+                        {review.patientReview && (
+                          <p className="text-sm text-foreground bg-white/50 p-3 rounded border border-dashed italic">
+                            "{review.patientReview}"
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </ScrollArea>
+            
+            <DialogFooter className="p-4 border-t bg-muted/20">
+              <Button onClick={() => setViewingReviewsDoctor(null)}>{t("common_close") || "Close"}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
