@@ -110,12 +110,12 @@ export function AppointmentChat({ appointmentId, doctorName, patientName }: Appo
                   )}
                   {msg.type === "image" && msg.fileUrl ? (
                     <div className="mb-1 rounded-lg overflow-hidden border bg-background/20">
-                      {msg.fileUrl.toLowerCase().match(/\.(jpeg|jpg|png|gif|webp)$/) ? (
+                      {(msg.fileUrl.startsWith("data:image/") || msg.fileUrl.toLowerCase().match(/\.(jpeg|jpg|png|gif|webp)$/)) ? (
                         <img 
-                          src={msg.fileUrl.startsWith("http") ? msg.fileUrl : `${window.location.origin}${msg.fileUrl}`} 
+                          src={(msg.fileUrl.startsWith("http") || msg.fileUrl.startsWith("data:")) ? msg.fileUrl : `${window.location.origin}${msg.fileUrl}`} 
                           alt="Shared image" 
                           className="max-w-full h-auto cursor-pointer hover:opacity-90 transition-opacity"
-                          onClick={() => window.open(msg.fileUrl!.startsWith("http") ? msg.fileUrl! : `${window.location.origin}${msg.fileUrl}`, "_blank")}
+                          onClick={() => window.open((msg.fileUrl!.startsWith("http") || msg.fileUrl!.startsWith("data:")) ? msg.fileUrl! : `${window.location.origin}${msg.fileUrl}`, "_blank")}
                         />
                       ) : (
                         <div 
