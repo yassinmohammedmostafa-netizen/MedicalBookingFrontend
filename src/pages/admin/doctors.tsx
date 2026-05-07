@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Star, Search, Trash2, CheckCircle, XCircle, Info, User as UserIcon, Mail, Phone, Briefcase, DollarSign, Languages, Edit } from "lucide-react";
+import { Star, Search, Trash2, CheckCircle, XCircle, Info, User as UserIcon, Mail, Phone, Briefcase, DollarSign, Languages, Edit, MessageSquare } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useT } from "@/lib/translations";
