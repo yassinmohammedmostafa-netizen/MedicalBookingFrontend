@@ -142,7 +142,6 @@ export default function AdminUsers() {
         method: "PATCH",
         body: JSON.stringify({ newPassword }),
       });
-      if (!res.ok) throw new Error("Failed to reset password");
       toast({ title: t("admin_passwordResetSuccess") || "Password reset successfully" });
     } catch (err) {
       toast({ title: t("admin_passwordResetError") || "Failed to reset password", variant: "destructive" });
@@ -270,7 +269,6 @@ export default function AdminUsers() {
                                       await customFetch(`/api/admin/users/${user.id}/verify-email`, {
                                         method: "PATCH",
                                       });
-                                      if (!res.ok) throw new Error();
                                       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
                                       toast({ title: "User email verified" });
                                     } catch {

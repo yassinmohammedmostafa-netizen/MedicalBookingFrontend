@@ -89,7 +89,6 @@ export default function Appointments() {
       await customFetch(`/api/appointments/${id}/cancel`, {
         method: "PATCH",
       });
-      if (!res.ok) throw new Error("Failed to cancel");
       await queryClient.invalidateQueries({ queryKey: getGetAppointmentsQueryKey() });
       toast({ title: t("appt_cancelled") || "Appointment cancelled" });
     } catch (err) {

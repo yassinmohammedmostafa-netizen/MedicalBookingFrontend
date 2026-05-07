@@ -97,7 +97,6 @@ export default function AdminDoctors() {
         method: "PATCH",
         body: JSON.stringify({ approve, reason }),
       });
-      if (!res.ok) throw new Error("Failed to approve changes");
       await queryClient.invalidateQueries({ queryKey: ["/api/admin/doctors"] });
     } finally {
       setApprovingChanges(null);
@@ -122,7 +121,6 @@ export default function AdminDoctors() {
         method: "PATCH",
         body: JSON.stringify(editForm),
       });
-      if (!res.ok) throw new Error("Failed to update doctor");
       await queryClient.invalidateQueries({ queryKey: ["/api/admin/doctors"] });
       setEditingDoctor(null);
       toast({ title: t("admin_doctorUpdated") || "Doctor updated successfully" });
