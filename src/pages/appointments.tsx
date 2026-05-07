@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { format } from "date-fns";
-import { useGetAppointments, useRateAppointment, getGetAppointmentsQueryKey } from "../../api-client-react/src/index.js";
+import { useGetAppointments, useRateAppointment, getGetAppointmentsQueryKey, customFetch } from "../../api-client-react/src/index.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -86,9 +86,8 @@ export default function Appointments() {
     if (!window.confirm(t("common_cancelConfirm") || "Are you sure you want to cancel this appointment?")) return;
     setCancelling(id);
     try {
-      const res = await fetch(`/api/appointments/${id}/cancel`, {
+      await customFetch(`/api/appointments/${id}/cancel`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` },
       });
       if (!res.ok) throw new Error("Failed to cancel");
       await queryClient.invalidateQueries({ queryKey: getGetAppointmentsQueryKey() });

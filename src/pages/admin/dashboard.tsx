@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useGetAdminStats } from "../../../api-client-react/src/index.js";
+import { useGetAdminStats, setBaseUrl, customFetch } from "../../../api-client-react/src/index.js";
 import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -110,11 +110,9 @@ export default function AdminDashboard() {
                     onClick={async () => {
                       if (!confirm("This will verify all currently unverified users. Continue?")) return;
                       try {
-                        const res = await fetch("/api/admin/dev/verify-all", {
-                          method: "POST",
-                          headers: { "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` }
+                        await customFetch("/api/admin/dev/verify-all", {
+                          method: "POST"
                         });
-                        if (!res.ok) throw new Error();
                         toast({ title: "All users verified" });
                       } catch {
                         toast({ title: "Failed to verify users", variant: "destructive" });
@@ -130,11 +128,9 @@ export default function AdminDashboard() {
                     onClick={async () => {
                       if (!confirm("This will approve all currently pending doctors. Continue?")) return;
                       try {
-                        const res = await fetch("/api/admin/dev/approve-all", {
-                          method: "POST",
-                          headers: { "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` }
+                        await customFetch("/api/admin/dev/approve-all", {
+                          method: "POST"
                         });
-                        if (!res.ok) throw new Error();
                         toast({ title: "All doctors approved" });
                       } catch {
                         toast({ title: "Failed to approve doctors", variant: "destructive" });

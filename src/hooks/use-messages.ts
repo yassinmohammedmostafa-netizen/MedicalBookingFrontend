@@ -1,20 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { customFetch } from "../../api-client-react/src/index.js";
 
 async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const token = localStorage.getItem("esaal_token");
-  const res = await fetch(path, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(options.headers as Record<string, string> ?? {}),
-    },
-  });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body?.error ?? res.statusText);
-  }
-  return res.json();
+  return customFetch<T>(path, options);
 }
 
 export interface Message {
@@ -75,19 +63,10 @@ export function useUploadFile() {
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append("file", file);
-      const token = localStorage.getItem("esaal_token");
-      const res = await fetch("/api/uploads", {
+      return customFetch<{ url: string; filename: string }>("/api/uploads", {
         method: "POST",
         body: formData,
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
       });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.error ?? "Upload failed");
-      }
-      return res.json() as Promise<{ url: string; filename: string }>;
     },
   });
 }

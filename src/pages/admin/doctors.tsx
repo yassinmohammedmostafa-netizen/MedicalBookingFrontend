@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDeleteDoctor, useGetAdminDoctors, useApproveDoctor } from "../../../api-client-react/src/index.js";
+import { useDeleteDoctor, useGetAdminDoctors, useApproveDoctor, customFetch } from "../../../api-client-react/src/index.js";
 import { Layout } from "@/components/layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -93,9 +93,8 @@ export default function AdminDoctors() {
 
     setApprovingChanges(doctorId);
     try {
-      const res = await fetch(`/api/admin/doctors/${doctorId}/approve-changes`, {
+      await customFetch(`/api/admin/doctors/${doctorId}/approve-changes`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` },
         body: JSON.stringify({ approve, reason }),
       });
       if (!res.ok) throw new Error("Failed to approve changes");
@@ -119,9 +118,8 @@ export default function AdminDoctors() {
   const handleSaveEdit = async () => {
     if (!editingDoctor) return;
     try {
-      const res = await fetch(`/api/admin/doctors/${editingDoctor.id}`, {
+      await customFetch(`/api/admin/doctors/${editingDoctor.id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` },
         body: JSON.stringify(editForm),
       });
       if (!res.ok) throw new Error("Failed to update doctor");

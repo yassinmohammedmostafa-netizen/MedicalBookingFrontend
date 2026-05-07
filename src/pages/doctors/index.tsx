@@ -42,7 +42,7 @@ export default function DoctorsList() {
     if (!nameSearch.trim()) return doctors;
     const q = nameSearch.toLowerCase();
     return doctors.filter(d => 
-      d.name.toLowerCase().includes(q) || 
+      `${d.firstName} ${d.lastName}`.toLowerCase().includes(q) || 
       d.specialty.some(s => s.toLowerCase().includes(q))
     );
   }, [doctors, nameSearch]);

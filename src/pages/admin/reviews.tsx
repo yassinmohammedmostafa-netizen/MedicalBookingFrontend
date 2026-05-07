@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { customFetch } from "../../../api-client-react/src/index.js";
 import { format } from "date-fns";
 import { Layout } from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,26 +27,16 @@ export default function AdminReviews() {
   const { data: reviews, isLoading } = useQuery<AdminReview[]>({
     queryKey: ["/api/admin/reviews"],
     queryFn: async () => {
-      const res = await fetch("/api/admin/reviews", {
-        headers: { "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` }
-      });
-      if (!res.ok) throw new Error("Failed to fetch reviews");
-      return res.json();
+      return customFetch<AdminReview[]>("/api/admin/reviews");
     }
   });
 
   const approveMutation = useMutation({
     mutationFn: async ({ id, approve }: { id: number; approve: boolean }) => {
-      const res = await fetch(`/api/admin/reviews/${id}/approve`, {
+      return customFetch(`/api/admin/reviews/${id}/approve`, {
         method: "PATCH",
-        headers: { 
-          "Content-Type": "application/json", 
-          "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` 
-        },
         body: JSON.stringify({ approve })
       });
-      if (!res.ok) throw new Error("Failed to update review status");
-      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/reviews"] });

@@ -4,6 +4,7 @@ import {
   useGetAppointments,
   useUpdateAppointmentStatus,
   getGetAppointmentsQueryKey,
+  customFetch,
 } from "../../../api-client-react/src/index.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
@@ -133,11 +134,9 @@ export default function DoctorAppointments() {
                               onClick={async () => {
                                 if (!window.confirm(t("common_cancelConfirm") || "Are you sure you want to cancel this appointment?")) return;
                                 try {
-                                  const res = await fetch(`/api/appointments/${app.id}/cancel`, {
+                                  await customFetch(`/api/appointments/${app.id}/cancel`, {
                                     method: "PATCH",
-                                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` },
                                   });
-                                  if (!res.ok) throw new Error("Failed to cancel");
                                   queryClient.invalidateQueries({ queryKey: getGetAppointmentsQueryKey() });
                                   toast({ title: t("appt_cancelled") || "Appointment cancelled" });
                                 } catch (err) {

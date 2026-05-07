@@ -5,6 +5,7 @@ import {
   useDeleteUser,
   useCreateAdminUser,
   getGetAdminUsersQueryKey,
+  customFetch,
 } from "../../../api-client-react/src/index.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
@@ -137,9 +138,8 @@ export default function AdminUsers() {
     }
     setResettingPassword(userId);
     try {
-      const res = await fetch(`/api/admin/users/${userId}/reset-password`, {
+      await customFetch(`/api/admin/users/${userId}/reset-password`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` },
         body: JSON.stringify({ newPassword }),
       });
       if (!res.ok) throw new Error("Failed to reset password");
@@ -267,12 +267,8 @@ export default function AdminUsers() {
                                   className="h-5 text-[9px] px-1 text-primary hover:bg-primary/10"
                                   onClick={async () => {
                                     try {
-                                      const res = await fetch(`/api/admin/users/${user.id}/verify-email`, {
+                                      await customFetch(`/api/admin/users/${user.id}/verify-email`, {
                                         method: "PATCH",
-                                        headers: {
-                                          "Content-Type": "application/json",
-                                          "Authorization": `Bearer ${localStorage.getItem("esaal_token")}`
-                                        }
                                       });
                                       if (!res.ok) throw new Error();
                                       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
@@ -298,14 +294,9 @@ export default function AdminUsers() {
                                   className="h-6 text-[9px] px-2"
                                   onClick={async () => {
                                     try {
-                                      const res = await fetch(`/api/admin/users/${user.id}/repair-doctor`, {
+                                      await customFetch(`/api/admin/users/${user.id}/repair-doctor`, {
                                         method: "POST",
-                                        headers: {
-                                          "Content-Type": "application/json",
-                                          "Authorization": `Bearer ${localStorage.getItem("esaal_token")}`
-                                        }
                                       });
-                                      if (!res.ok) throw new Error();
                                       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
                                       toast({ title: "Doctor profile repaired" });
                                     } catch {
@@ -342,15 +333,10 @@ export default function AdminUsers() {
                                         onClick={async () => {
                                           if (!user.doctorId) return;
                                           try {
-                                            const res = await fetch(`/api/admin/doctors/${user.doctorId}/approve`, {
+                                            await customFetch(`/api/admin/doctors/${user.doctorId}/approve`, {
                                               method: "PATCH",
-                                              headers: {
-                                                "Content-Type": "application/json",
-                                                "Authorization": `Bearer ${localStorage.getItem("esaal_token")}`
-                                              },
                                               body: JSON.stringify({ approve: true })
                                             });
-                                            if (!res.ok) throw new Error();
                                             queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
                                             toast({ title: "Doctor account approved" });
                                           } catch {
@@ -370,15 +356,10 @@ export default function AdminUsers() {
                                           if (!user.doctorId) return;
                                           const reason = window.prompt("Enter rejection reason (optional):") || "";
                                           try {
-                                            const res = await fetch(`/api/admin/doctors/${user.doctorId}/approve`, {
+                                            await customFetch(`/api/admin/doctors/${user.doctorId}/approve`, {
                                               method: "PATCH",
-                                              headers: {
-                                                "Content-Type": "application/json",
-                                                "Authorization": `Bearer ${localStorage.getItem("esaal_token")}`
-                                              },
                                               body: JSON.stringify({ approve: false, reason })
                                             });
-                                            if (!res.ok) throw new Error();
                                             queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
                                             toast({ title: "Doctor account rejected" });
                                           } catch {

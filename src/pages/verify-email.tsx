@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { customFetch } from "../../api-client-react/src/index.js";
 import { useLocation } from "wouter";
 import { Layout } from "@/components/layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,17 +25,11 @@ export default function VerifyEmail() {
 
     async function doVerify() {
       try {
-        const res = await fetch(`/api/auth/verify-email?token=${token}`);
-        const data = await res.json();
-        if (res.ok) {
-          setStatus("success");
-        } else {
-          setStatus("error");
-          setErrorMessage(data.error || "Verification failed");
-        }
-      } catch (err) {
+        await customFetch(`/api/auth/verify-email?token=${token}`);
+        setStatus("success");
+      } catch (err: any) {
         setStatus("error");
-        setErrorMessage("Network error. Please try again.");
+        setErrorMessage(err.message || "Verification failed");
       }
     }
 

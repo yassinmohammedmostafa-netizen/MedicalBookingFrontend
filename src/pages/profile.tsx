@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth";
 import { useLanguage } from "@/lib/language";
 import { useT } from "@/lib/translations";
-import { useUpdateProfile, useChangePassword, useUpdateDoctorProfile, useGetDoctorProfile, getGetDoctorProfileQueryKey } from "../../api-client-react/src/index.js";
+import { useUpdateProfile, useChangePassword, useUpdateDoctorProfile, useGetDoctorProfile, getGetDoctorProfileQueryKey, customFetch } from "../../api-client-react/src/index.js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -151,14 +151,10 @@ export default function ProfilePage() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/uploads", {
+      const data = await customFetch<{ url: string }>("/api/uploads", {
         method: "POST",
-        headers: { "Authorization": `Bearer ${localStorage.getItem("esaal_token")}` },
         body: formData
       });
-      
-      if (!res.ok) throw new Error("Upload failed");
-      const data = await res.json();
       setAvatarUrl(data.url);
       
       // Auto-save the avatar change
