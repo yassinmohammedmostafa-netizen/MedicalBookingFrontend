@@ -19,7 +19,7 @@ export default function AdminDashboard() {
     { labelKey: "admin_allAppts" as const, value: stats.totalAppointments, color: "bg-indigo-50", textColor: "text-indigo-700", iconBg: "bg-indigo-100", Icon: Calendar },
     { labelKey: "admin_paidAppointments" as const, value: stats.paidAppointments, color: "bg-green-50", textColor: "text-green-700", iconBg: "bg-green-100", Icon: CreditCard },
     { labelKey: "admin_pendingPayments" as const, value: stats.pendingAppointments, color: "bg-amber-50", textColor: "text-amber-700", iconBg: "bg-amber-100", Icon: CreditCard },
-    { label: "Profile Changes", value: stats.pendingProfileChanges, color: "bg-purple-50", textColor: "text-purple-700", iconBg: "bg-purple-100", Icon: ShieldAlert },
+    { labelKey: "admin_pendingChanges" as const, value: stats.pendingProfileChanges, color: "bg-purple-50", textColor: "text-purple-700", iconBg: "bg-purple-100", Icon: ShieldAlert, href: "/admin/doctors?filter=changes" },
   ] : [];
 
   const quickLinks = [
@@ -51,21 +51,33 @@ export default function AdminDashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-            {statCards.map(({ label, labelKey, value, color, textColor, iconBg, Icon }) => (
-              <Card key={labelKey || label} className={`${color} border-none shadow-sm`}>
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground mb-1">{labelKey ? t(labelKey) : label}</p>
-                      <h3 className={`text-3xl font-bold ${textColor}`}>{value}</h3>
+            {statCards.map(({ label, labelKey, value, color, textColor, iconBg, Icon, href }) => {
+              const content = (
+                <Card className={`${color} border-none shadow-sm h-full ${href ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}>
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground mb-1">{labelKey ? t(labelKey) : label}</p>
+                        <h3 className={`text-3xl font-bold ${textColor}`}>{value}</h3>
+                      </div>
+                      <div className={`p-2 ${iconBg} rounded-lg`}>
+                        <Icon className={`w-5 h-5 ${textColor}`} />
+                      </div>
                     </div>
-                    <div className={`p-2 ${iconBg} rounded-lg`}>
-                      <Icon className={`w-5 h-5 ${textColor}`} />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              );
+
+              if (href) {
+                return (
+                  <Link key={href} href={href}>
+                    {content}
+                  </Link>
+                );
+              }
+
+              return <div key={labelKey || label}>{content}</div>;
+            })}
           </div>
         )}
 

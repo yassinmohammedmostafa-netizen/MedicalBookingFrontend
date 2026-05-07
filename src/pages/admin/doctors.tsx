@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useDeleteDoctor, useGetAdminDoctors, useApproveDoctor, customFetch } from "../../../api-client-react/src/index.js";
 import { Layout } from "@/components/layout";
@@ -38,6 +38,8 @@ export default function AdminDoctors() {
   const approveDoctorMutation = useApproveDoctor();
   const queryClient = useQueryClient();
   const t = useT();
+  // Force translation refresh
+  const _unused = t("_cache_refresh" as any);
   const { toast } = useToast();
   const { lang } = useLanguage();
 
@@ -45,6 +47,16 @@ export default function AdminDoctors() {
   const [specialty, setSpecialty] = useState("all");
   const [status, setStatus] = useState("all");
   const [approvalFilter, setApprovalFilter] = useState("all");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const filterParam = params.get("filter");
+    if (filterParam === "changes") {
+      setApprovalFilter("changes");
+    } else if (filterParam === "pending") {
+      setApprovalFilter("pending");
+    }
+  }, []);
 
   const filtered = useMemo(() => {
     if (!doctors) return [];
@@ -58,8 +70,21 @@ export default function AdminDoctors() {
         return false;
       }
       if (status === "online" && !doctor.isOnline) return false;
+      
       if (approvalFilter === "pending" && doctor.isApproved) return false;
       if (approvalFilter === "approved" && !doctor.isApproved) return false;
+      if (approvalFilter === "changes") {
+        const hasChanges = !!(
+          doctor.pendingBio !== null || 
+          doctor.pendingPrice !== null || 
+          doctor.pendingSpecialty !== null || 
+          doctor.pendingLanguages !== null || 
+          doctor.pendingGender !== null || 
+          doctor.pendingPaymentInfo !== null || 
+          doctor.pendingAvatarUrl !== null
+        );
+        if (!hasChanges) return false;
+      }
       return true;
     });
   }, [doctors, search, specialty, status, approvalFilter]);
@@ -175,6 +200,7 @@ export default function AdminDoctors() {
               <SelectItem value="all">{t("admin_allDoctors")}</SelectItem>
               <SelectItem value="pending">{t("admin_pendingApproval")}</SelectItem>
               <SelectItem value="approved">{t("admin_approved")}</SelectItem>
+              <SelectItem value="changes">{t("admin_pendingChanges") || "Pending Changes"}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -254,7 +280,7 @@ export default function AdminDoctors() {
                             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                               <CheckCircle className="w-3 h-3 me-1" /> {t("admin_approved")}
                             </Badge>
-                            {(doctor.pendingBio || doctor.pendingPrice !== null || doctor.pendingSpecialty || doctor.pendingPaymentInfo) && (
+                            {(doctor.pendingBio !== null || doctor.pendingPrice !== null || doctor.pendingSpecialty !== null || doctor.pendingLanguages !== null || doctor.pendingGender !== null || doctor.pendingPaymentInfo !== null || doctor.pendingAvatarUrl !== null) && (
                               <Badge variant="outline" className="bg-amber-50 text-amber-600 border-amber-200 text-[10px] animate-pulse">
                                 {t("admin_pendingEdits") || "Pending Edits"}
                               </Badge>
@@ -309,17 +335,33 @@ export default function AdminDoctors() {
                               <ScrollArea className="max-h-[70vh] p-4">
                                 <div className="space-y-6">
                                   <div className="flex items-center gap-4 border-b pb-4">
-                                    <Avatar className="h-16 w-16">
-                                      <AvatarImage src={doctor.avatarUrl || undefined} />
-                                      <AvatarFallback>{doctor.firstName.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
+                                    <div className="relative">
+                                      <Avatar className="h-16 w-16 border-2 border-background shadow-sm">
+                                        <AvatarImage src={doctor.avatarUrl || undefined} />
+                                        <AvatarFallback>{doctor.firstName.charAt(0)}</AvatarFallback>
+                                      </Avatar>
+                                      {doctor.pendingAvatarUrl && (
+                                        <div className="absolute -top-1 -right-1 bg-amber-500 rounded-full p-0.5 border-2 border-white shadow-sm" title={t("admin_pendingPhoto") || "Pending Photo"}>
+                                          <Edit className="w-2.5 h-2.5 text-white" />
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="flex-1">
                                       <h3 className="text-xl font-bold">{doctor.firstName} {doctor.lastName}</h3>
                                       <div className="flex flex-col gap-1 mt-1 text-sm text-muted-foreground">
                                         <div className="flex items-center gap-2"><Mail className="w-3.5 h-3.5" /> {doctor.email}</div>
                                         <div className="flex items-center gap-2"><Briefcase className="w-3.5 h-3.5" /> {doctor.type}</div>
                                       </div>
                                     </div>
+                                    {doctor.pendingAvatarUrl && (
+                                      <div className="flex flex-col items-center gap-1">
+                                        <div className="text-[9px] font-bold text-amber-600 uppercase">{t("admin_newPhoto") || "New Photo"}</div>
+                                        <Avatar className="h-16 w-16 border-2 border-amber-200 shadow-sm animate-pulse">
+                                          <AvatarImage src={doctor.pendingAvatarUrl} />
+                                          <AvatarFallback>?</AvatarFallback>
+                                        </Avatar>
+                                      </div>
+                                    )}
                                   </div>
 
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -361,12 +403,46 @@ export default function AdminDoctors() {
                                     <div className="space-y-1">
                                       <Label className="text-xs text-muted-foreground uppercase">{t("profile_paymentMethod")}</Label>
                                       <div className="font-medium text-sm break-all">{doctor.paymentInfo || t("common_notSet") || "Not set"}</div>
-                                      {doctor.pendingPaymentInfo && (
+                                      {doctor.pendingPaymentInfo !== null && (
                                         <div className="mt-2 p-2 bg-amber-50 rounded border border-amber-100">
                                           <div className="text-[10px] font-bold text-amber-700 uppercase">
                                             {t("admin_pendingChanges")}
                                           </div>
                                           <div className="font-bold text-sm text-amber-800 break-all">{doctor.pendingPaymentInfo}</div>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    <div className="space-y-1">
+                                      <Label className="text-xs text-muted-foreground uppercase">{t("profile_gender")}</Label>
+                                      <div className="font-medium text-sm capitalize">{doctor.gender}</div>
+                                      {doctor.pendingGender !== null && (
+                                        <div className="mt-2 p-2 bg-amber-50 rounded border border-amber-100">
+                                          <div className="text-[10px] font-bold text-amber-700 uppercase">
+                                            {t("admin_pendingChanges")}
+                                          </div>
+                                          <div className="font-bold text-sm text-amber-800 capitalize">{doctor.pendingGender}</div>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    <div className="space-y-1">
+                                      <Label className="text-xs text-muted-foreground uppercase">{t("profile_languages")}</Label>
+                                      <div className="flex flex-wrap gap-1 mt-1">
+                                        {(Array.isArray(doctor.languages) ? doctor.languages : [doctor.languages]).map((l: string) => (
+                                          <Badge key={l} variant="secondary" className="text-[10px]">{l}</Badge>
+                                        ))}
+                                      </div>
+                                      {doctor.pendingLanguages !== null && (
+                                        <div className="mt-2 p-2 bg-amber-50 rounded border border-amber-100">
+                                          <div className="text-[10px] font-bold text-amber-700 uppercase">
+                                            {t("admin_pendingChanges")}
+                                          </div>
+                                          <div className="flex flex-wrap gap-1 mt-1">
+                                            {doctor.pendingLanguages.map((l: string) => (
+                                              <Badge key={l} variant="outline" className="text-[10px] bg-white border-amber-200 text-amber-800">{l}</Badge>
+                                            ))}
+                                          </div>
                                         </div>
                                       )}
                                     </div>
@@ -385,7 +461,7 @@ export default function AdminDoctors() {
                                     )}
                                   </div>
 
-                                  {(doctor.pendingBio || doctor.pendingPrice !== null || doctor.pendingSpecialty || doctor.pendingPaymentInfo) && (
+                                  {(doctor.pendingBio !== null || doctor.pendingPrice !== null || doctor.pendingSpecialty !== null || doctor.pendingLanguages !== null || doctor.pendingGender !== null || doctor.pendingPaymentInfo !== null || doctor.pendingAvatarUrl !== null) && (
                                     <div className="flex gap-2 pt-4 border-t">
                                       <Button 
                                         className="flex-1 bg-green-600 hover:bg-green-700" 

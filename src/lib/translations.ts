@@ -430,6 +430,8 @@ const translations = {
   profile_bio:              { en: "Biography",                 ar: "النبذة" },
   profile_pendingNote:      { en: "Changes to bio, price, and specialties require admin approval.", ar: "تتطلب التغييرات في النبذة والسعر والتخصصات موافقة المسؤول." },
   profile_currentApprovedBio: { en: "Current Approved Bio",    ar: "النبذة المعتمدة الحالية" },
+  profile_photoTitle:       { en: "Profile Photo",             ar: "الصورة الشخصية" },
+  profile_photoSub:         { en: "Visible to patients after approval", ar: "تظهر للمرضى بعد الموافقة" },
 
   // ── Doctor Status Page ────────────────────────────────────────
   status_rejectedTitle:     { en: "Application Not Approved", ar: "لم تتم الموافقة على الطلب" },
@@ -606,6 +608,13 @@ const translations = {
   pw_crit_upper:            { en: "Uppercase (A-Z)",           ar: "حروف كبيرة (A-Z)" },
   pw_crit_number:           { en: "Number (0-9)",              ar: "أرقام (0-9)" },
   pw_crit_special:          { en: "Special char (!@#)",        ar: "رمز خاص (!@#)" },
+
+  admin_doctorReviews:      { en: "Doctor Reviews",           ar: "تقييمات الطبيب" },
+  admin_noReviewsFound:     { en: "No reviews found for this doctor.", ar: "لا توجد تقييمات لهذا الطبيب." },
+  admin_pendingPhoto:       { en: "Pending Photo",            ar: "صورة معلقة" },
+  admin_newPhoto:           { en: "New Photo",                ar: "صورة جديدة" },
+  common_close:             { en: "Close",                    ar: "إغلاق" },
+  _cache_refresh:           { en: "Refresh",                  ar: "تحديث" },
 };
 
 export type TranslationKey = keyof typeof translations;

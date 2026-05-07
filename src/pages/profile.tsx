@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth";
 import { useLanguage } from "@/lib/language";
 import { useT } from "@/lib/translations";
-import { useUpdateProfile, useChangePassword, useUpdateDoctorProfile, useGetDoctorProfile, getGetDoctorProfileQueryKey, customFetch } from "../../api-client-react/src/index.js";
+import { useUpdateProfile, useChangePassword, useUpdateDoctorProfile, useGetDoctorProfile, getGetDoctorProfileQueryKey, getGetMeQueryKey, customFetch } from "../../api-client-react/src/index.js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -157,8 +157,8 @@ export default function ProfilePage() {
       });
       setAvatarUrl(data.url);
       
-      // Auto-save the avatar change
-      await updateDoctorProfileMutation.mutateAsync({ data: { avatarUrl: data.url } });
+      // Auto-save the avatar change - passing the new URL directly to avoid stale state
+      handleDoctorProfileSave(true, data.url);
       queryClient.invalidateQueries({ queryKey: getGetDoctorProfileQueryKey() });
       toast({ title: "Photo uploaded", description: "Waiting for admin approval" });
     } catch (err) {
@@ -220,7 +220,7 @@ export default function ProfilePage() {
     }
   };
 
-  const handleDoctorProfileSave = async () => {
+  const handleDoctorProfileSave = async (silent: boolean = false, newAvatarUrl?: string) => {
     try {
       const originalBio = doctorProfile?.pendingBio ?? doctorProfile?.bio ?? "";
       const originalPrice = doctorProfile?.pendingPrice ?? doctorProfile?.price ?? 0;
@@ -249,24 +249,34 @@ export default function ProfilePage() {
       if (yearsExperience !== originalYearsExperience) dataToUpdate.yearsExperience = yearsExperience;
       if (!arraysEqual(languages, originalLanguages)) dataToUpdate.languages = languages;
       if (isOnline !== doctorProfile?.isOnline) dataToUpdate.isOnline = isOnline;
-      if (avatarUrl !== (doctorProfile?.pendingAvatarUrl ?? doctorProfile?.avatarUrl ?? "")) dataToUpdate.avatarUrl = avatarUrl;
+      const effectiveAvatarUrl = newAvatarUrl || avatarUrl;
+      if (effectiveAvatarUrl !== (doctorProfile?.pendingAvatarUrl ?? doctorProfile?.avatarUrl ?? "")) {
+        dataToUpdate.avatarUrl = effectiveAvatarUrl;
+      }
 
       if (Object.keys(dataToUpdate).length === 0) {
-        toast({ description: t("settings_noChanges") || "No changes to save" });
+        if (!silent) toast({ description: t("settings_noChanges") || "No changes to save" });
         return;
       }
 
       await updateDoctorProfileMutation.mutateAsync({ data: dataToUpdate });
       queryClient.invalidateQueries({ queryKey: ["/api/doctor/profile"] });
+      queryClient.invalidateQueries({ queryKey: getGetMeQueryKey() });
       
-      if (doctorProfile?.isApproved) {
-        toast({ description: t("profile_doctorUpdatePending") || "Profile update submitted for admin approval" });
-      } else {
-        toast({ description: t("profile_doctorUpdated") || "Profile updated successfully" });
+      if (!silent) {
+        if (doctorProfile?.isApproved) {
+          toast({ description: t("profile_doctorUpdatePending") || "Profile update submitted for admin approval" });
+        } else {
+          toast({ description: t("profile_doctorUpdated") || "Profile updated successfully" });
+        }
       }
     } catch {
-      toast({ description: t("profile_doctorUpdateFail") || "Failed to update profile", variant: "destructive" });
+      if (!silent) toast({ description: t("profile_doctorUpdateFail") || "Failed to update profile", variant: "destructive" });
     }
+  };
+
+  const handleAutoSave = () => {
+    handleDoctorProfileSave(true);
   };
 
   const handleToggleOnline = async (checked: boolean) => {
@@ -331,7 +341,7 @@ export default function ProfilePage() {
                     <p className="text-xs text-muted-foreground mt-1">
                       {doctorProfile?.pendingAvatarUrl ? (
                         <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-[9px] animate-pulse">
-                          {t("admin_pending") || "Pending Approval"}
+                          {t("admin_pendingApproval") || "Pending Approval"}
                         </Badge>
                       ) : (
                         t("profile_photoSub") || "Visible to patients after approval"
@@ -401,6 +411,7 @@ export default function ProfilePage() {
                           id="bio"
                           value={bio}
                           onChange={(e) => setBio(e.target.value)}
+                          onBlur={handleAutoSave}
                           placeholder={t("profile_bioPlaceholder")}
                           className="resize-none h-32"
                         />
@@ -447,6 +458,7 @@ export default function ProfilePage() {
                       type="number"
                       value={price}
                       onChange={(e) => setPrice(Number(e.target.value))}
+                      onBlur={handleAutoSave}
                     />
                     <p className="text-[10px] text-amber-600 italic font-medium">
                       {t("profile_currentSessionPrice") || "Current Session Price"}: {t("common_egp")} {doctorProfile?.price}
@@ -472,6 +484,7 @@ export default function ProfilePage() {
                       id="payment-info"
                       value={paymentInfo}
                       onChange={(e) => setPaymentInfo(e.target.value)}
+                      onBlur={handleAutoSave}
                       placeholder={t("reg_paymentPlaceholder")}
                     />
                     {doctorProfile?.pendingPaymentInfo && (
@@ -505,7 +518,7 @@ export default function ProfilePage() {
                       <div className="grid grid-cols-2 gap-2">
                         {(["male", "female"] as const).map(g => (
                           <button key={g} type="button"
-                            onClick={() => setGender(g)}
+                            onClick={() => { setGender(g); setTimeout(handleAutoSave, 0); }}
                             className={`py-2 rounded-lg border text-xs font-medium transition-all capitalize ${
                               gender === g ? "border-primary bg-primary/5 text-primary" : "border-border text-muted-foreground hover:border-primary/40"
                             }`}>
@@ -520,7 +533,7 @@ export default function ProfilePage() {
                       <div className="grid grid-cols-2 gap-2">
                         {(["individual", "group"] as const).map(st => (
                           <button key={st} type="button"
-                            onClick={() => setSessionType(st)}
+                            onClick={() => { setSessionType(st); setTimeout(handleAutoSave, 0); }}
                             className={`py-2 rounded-lg border text-xs font-medium transition-all capitalize ${
                               sessionType === st ? "border-primary bg-primary/5 text-primary" : "border-border text-muted-foreground hover:border-primary/40"
                             }`}>
@@ -540,6 +553,7 @@ export default function ProfilePage() {
                         min={0}
                         value={yearsExperience}
                         onChange={(e) => setYearsExperience(Number(e.target.value))}
+                        onBlur={handleAutoSave}
                       />
                     </div>
                     <div className="space-y-2">
@@ -549,6 +563,7 @@ export default function ProfilePage() {
                         placeholder="Arabic, English"
                         value={languages.join(", ")}
                         onChange={(e) => setLanguages(e.target.value.split(",").map(l => l.trim()).filter(Boolean))}
+                        onBlur={handleAutoSave}
                       />
                     </div>
                   </div>
