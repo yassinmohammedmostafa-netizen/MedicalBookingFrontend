@@ -207,7 +207,7 @@ export default function DoctorsList() {
                       </div>
 
                       <div className="flex flex-wrap gap-2 mb-5">
-                        {(doctor.immediateAvailable || doctor.isOnline) && (
+                        {doctor.isOnline && (
                           <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-200 text-xs">
                             <Clock className="w-3 h-3 me-1" /> {t("docs_availableNow")}
                           </Badge>

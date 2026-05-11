@@ -130,13 +130,14 @@ export default function AdminDoctors() {
 
   const [editingDoctor, setEditingDoctor] = useState<any | null>(null);
   const [viewingReviewsDoctor, setViewingReviewsDoctor] = useState<any | null>(null);
-  const [editForm, setEditForm] = useState({ price: 0, specialty: [] as string[] });
+  const [editForm, setEditForm] = useState({ price: 0, specialty: [] as string[], isOnline: false });
 
   const handleEditDoctor = (doctor: any) => {
     setEditingDoctor(doctor);
     setEditForm({ 
       price: doctor.price, 
-      specialty: Array.isArray(doctor.specialty) ? doctor.specialty : [doctor.specialty] 
+      specialty: Array.isArray(doctor.specialty) ? doctor.specialty : [doctor.specialty],
+      isOnline: doctor.isOnline
     });
   };
 
@@ -268,9 +269,6 @@ export default function AdminDoctors() {
                         <div className="flex flex-col gap-1 items-start">
                           {doctor.isOnline && (
                             <Badge variant="secondary" className="bg-green-100 text-green-800 text-[10px] px-1.5 py-0">{t("admin_badgeOnline")}</Badge>
-                          )}
-                          {doctor.immediateAvailable && (
-                            <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-[10px] px-1.5 py-0">{t("admin_badgeImmediate")}</Badge>
                           )}
                         </div>
                       </TableCell>
@@ -491,7 +489,14 @@ export default function AdminDoctors() {
                             variant="outline"
                             size="sm"
                             className="h-8"
-                            onClick={() => handleEditDoctor(doctor)}
+                            onClick={() => {
+                              setEditingDoctor(doctor);
+                              setEditForm({
+                                price: doctor.price,
+                                specialty: doctor.specialty,
+                                isOnline: doctor.isOnline,
+                              });
+                            }}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -538,6 +543,16 @@ export default function AdminDoctors() {
               <DialogTitle>{t("admin_editDoctor")}: {editingDoctor?.firstName} {editingDoctor?.lastName}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-2 border rounded-md">
+                  <Label htmlFor="edit-online" className="cursor-pointer font-medium">{t("admin_badgeOnline")}</Label>
+                  <Switch
+                    id="edit-online"
+                    checked={editForm.isOnline}
+                    onCheckedChange={(checked) => setEditForm(prev => ({ ...prev, isOnline: checked }))}
+                  />
+                </div>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="edit-price">{t("admin_priceLabel")}</Label>
                 <Input

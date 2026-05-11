@@ -70,7 +70,7 @@ export default function DoctorProfile() {
     });
   };
 
-  const canBookInstantly = !!doctor && (doctor.isOnline || doctor.immediateAvailable);
+  const canBookInstantly = !!doctor && doctor.isOnline;
 
   if (isLoadingDoctor) {
     return (
@@ -132,7 +132,7 @@ export default function DoctorProfile() {
                 <Badge variant="outline" className="capitalize text-sm font-medium py-1 px-3">
                   {({ psychiatrist: t("reg_psychiatrist"), psychologist: t("reg_psychologist") } as Record<string,string>)[doctor.type] ?? doctor.type}
                 </Badge>
-                {(doctor.immediateAvailable || doctor.isOnline) && (
+                {doctor.isOnline && (
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-200">
                     <Clock className="w-3 h-3 me-1" /> {t("docs_availableNow")}
                   </Badge>
