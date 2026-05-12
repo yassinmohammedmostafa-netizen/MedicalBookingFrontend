@@ -5,6 +5,7 @@ import { useLanguage } from "@/lib/language";
 import { useT } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import {
+  LogOut, Menu, X,
   LayoutDashboard, Calendar, Clock, Users, ClipboardList, Stethoscope, UserCircle, MessageSquare,
   Leaf, Phone
 } from "lucide-react";
