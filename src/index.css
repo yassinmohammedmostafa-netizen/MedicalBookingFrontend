@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -79,52 +79,52 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  --background: 170 30% 98%;
-  --foreground: 175 40% 15%;
+  --background: 180 20% 98%;
+  --foreground: 180 45% 12%;
 
-  --border: 170 20% 90%;
+  --border: 180 15% 90%;
 
   --card: 0 0% 100%;
-  --card-foreground: 175 40% 15%;
-  --card-border: 170 20% 90%;
+  --card-foreground: 180 45% 12%;
+  --card-border: 180 15% 90%;
 
   --sidebar: 0 0% 100%;
-  --sidebar-foreground: 175 40% 15%;
-  --sidebar-border: 170 20% 90%;
-  --sidebar-primary: 175 60% 35%;
+  --sidebar-foreground: 180 45% 12%;
+  --sidebar-border: 180 15% 90%;
+  --sidebar-primary: 180 40% 25%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 170 30% 95%;
-  --sidebar-accent-foreground: 175 40% 15%;
-  --sidebar-ring: 175 60% 35%;
+  --sidebar-accent: 180 20% 95%;
+  --sidebar-accent-foreground: 180 45% 12%;
+  --sidebar-ring: 180 40% 25%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 175 40% 15%;
-  --popover-border: 170 20% 90%;
+  --popover-foreground: 180 45% 12%;
+  --popover-border: 180 15% 90%;
 
-  --primary: 175 60% 35%;
+  --primary: 180 40% 25%;
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 170 30% 92%;
-  --secondary-foreground: 175 60% 25%;
+  --secondary: 160 35% 92%;
+  --secondary-foreground: 180 40% 20%;
 
-  --muted: 170 20% 94%;
-  --muted-foreground: 175 20% 45%;
+  --muted: 180 10% 94%;
+  --muted-foreground: 180 15% 45%;
 
-  --accent: 170 30% 92%;
-  --accent-foreground: 175 60% 25%;
+  --accent: 160 35% 92%;
+  --accent-foreground: 180 40% 20%;
 
   --destructive: 0 70% 50%;
   --destructive-foreground: 0 0% 100%;
 
-  --input: 170 20% 85%;
-  --ring: 175 60% 35%;
-  --chart-1: 175 60% 35%;
-  --chart-2: 150 50% 45%;
-  --chart-3: 190 50% 40%;
+  --input: 180 15% 85%;
+  --ring: 180 40% 25%;
+  --chart-1: 180 40% 25%;
+  --chart-2: 160 40% 45%;
+  --chart-3: 180 30% 40%;
   --chart-4: 45 80% 50%;
   --chart-5: 10 70% 55%;
 
-  --app-font-sans: 'Plus Jakarta Sans', sans-serif;
+  --app-font-sans: 'Outfit', 'Cairo', sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: Menlo, monospace;
   --radius: .75rem; /* 12px */
@@ -164,46 +164,46 @@ html[dir="rtl"] {
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  --background: 175 40% 10%;
-  --foreground: 170 30% 95%;
+  --background: 180 40% 8%;
+  --foreground: 180 20% 95%;
 
-  --border: 175 30% 20%;
+  --border: 180 25% 18%;
 
-  --card: 175 40% 12%;
-  --card-foreground: 170 30% 95%;
-  --card-border: 175 30% 20%;
+  --card: 180 40% 10%;
+  --card-foreground: 180 20% 95%;
+  --card-border: 180 25% 18%;
 
-  --sidebar: 175 40% 12%;
-  --sidebar-foreground: 170 30% 95%;
-  --sidebar-border: 175 30% 20%;
-  --sidebar-primary: 175 60% 45%;
+  --sidebar: 180 40% 10%;
+  --sidebar-foreground: 180 20% 95%;
+  --sidebar-border: 180 25% 18%;
+  --sidebar-primary: 180 40% 35%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 175 30% 20%;
-  --sidebar-accent-foreground: 170 30% 95%;
-  --sidebar-ring: 175 60% 45%;
+  --sidebar-accent: 180 25% 18%;
+  --sidebar-accent-foreground: 180 20% 95%;
+  --sidebar-ring: 180 40% 35%;
 
-  --popover: 175 40% 12%;
-  --popover-foreground: 170 30% 95%;
-  --popover-border: 175 30% 20%;
+  --popover: 180 40% 10%;
+  --popover-foreground: 180 20% 95%;
+  --popover-border: 180 25% 18%;
 
-  --primary: 175 60% 45%;
+  --primary: 180 40% 35%;
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 175 30% 20%;
-  --secondary-foreground: 170 30% 95%;
+  --secondary: 180 25% 18%;
+  --secondary-foreground: 180 20% 95%;
 
-  --muted: 175 30% 20%;
-  --muted-foreground: 170 20% 65%;
+  --muted: 180 25% 18%;
+  --muted-foreground: 180 15% 65%;
 
-  --accent: 175 30% 20%;
-  --accent-foreground: 170 30% 95%;
+  --accent: 180 25% 18%;
+  --accent-foreground: 180 20% 95%;
 
   --destructive: 0 60% 50%;
   --destructive-foreground: 0 0% 100%;
 
-  --input: 175 30% 25%;
-  --ring: 175 60% 45%;
-  --chart-1: 175 60% 45%;
+  --input: 180 25% 22%;
+  --ring: 180 40% 35%;
+  --chart-1: 180 40% 35%;
   --chart-2: 150 50% 55%;
   --chart-3: 190 50% 50%;
   --chart-4: 45 80% 60%;

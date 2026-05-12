@@ -55,7 +55,7 @@ export default function Home() {
       {/* Features */}
       <section className="py-20 bg-background">
         <div className="container px-4 mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-16">{t("home_whyEsaal")}</h2>
+          <h2 className="text-3xl font-bold text-center mb-16">{t("home_whyRelax")}</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6">
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">

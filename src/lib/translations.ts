@@ -17,11 +17,11 @@ const translations = {
   nav_reviews:            { en: "Reviews",             ar: "التقييمات" },
 
   // ── Home page ────────────────────────────────────────────────
-  home_heroTitle:         { en: "Find your path to better mental health",            ar: "ابدأ رحلتك نحو صحة نفسية أفضل" },
-  home_heroSub:           { en: "Connect with top Doctors in Egypt. Professional, confidential, and comfortable.", ar: "تواصل مع أفضل الأطباء في مصر. محترفون، سرية تامة، وراحة كاملة." },
+  home_heroTitle:         { en: "Relax Therapy — We heal with Science",            ar: "ريلاكس ثيرابي — نعالج بالعلم" },
+  home_heroSub:           { en: "Find your path to better mental health with our professional specialists. Professional, confidential, and comfortable.", ar: "ابدأ رحلتك نحو صحة نفسية أفضل مع متخصصينا المحترفين. محترفون، سرية تامة، وراحة كاملة." },
   home_findDoctor:        { en: "Find a Doctor",       ar: "ابحث عن طبيب" },
   home_createAccount:     { en: "Create an Account",  ar: "إنشاء حساب" },
-  home_whyEsaal:          { en: "Why choose Esaal",   ar: "لماذا إسأل؟" },
+  home_whyRelax:          { en: "Why choose Relax Therapy",   ar: "لماذا ريلاكس ثيرابي؟" },
   home_verified:          { en: "Verified Professionals",  ar: "متخصصون موثّقون" },
   home_verifiedDesc:      { en: "Every doctor on our platform goes through a rigorous verification process.", ar: "كل طبيب على منصتنا يمر بعملية تحقق صارمة." },
   home_onlineSession:     { en: "Online Video Sessions",   ar: "جلسات فيديو أونلاين" },
@@ -94,7 +94,7 @@ const translations = {
   reg_iAmDoctorSub:       { en: "Medical specialist of any field", ar: "متخصص في أي مجال طبي" },
   reg_createPatient:      { en: "Create a Patient Account",  ar: "إنشاء حساب مريض" },
   reg_createDoctor:       { en: "Create a Doctor Account",   ar: "إنشاء حساب طبيب" },
-  reg_patientSub:         { en: "Join Esaal to connect with mental health professionals", ar: "انضم إلى إسأل للتواصل مع متخصصي الصحة النفسية" },
+  reg_patientSub:         { en: "Join Relax Therapy to connect with mental health professionals", ar: "انضم إلى ريلاكس ثيرابي للتواصل مع متخصصي الصحة النفسية" },
   reg_doctorSub:          { en: "Join our network of mental health professionals", ar: "انضم إلى شبكة متخصصي الصحة النفسية" },
   reg_firstName:          { en: "First Name",              ar: "الاسم الأول" },
   reg_lastName:           { en: "Last Name",               ar: "اسم العائلة" },
@@ -443,7 +443,7 @@ const translations = {
   status_rejectedHelp:      { en: "If you have any questions, please contact our support team.", ar: "إذا كان لديك أي أسئلة، يرجى التواصل مع فريق الدعم لدينا." },
   status_goToProfile:       { en: "Go to Profile",             ar: "الانتقال إلى الملف" },
   status_approvedTitle:     { en: "Application Approved!",     ar: "تمت الموافقة على الطلب!" },
-  status_approvedMessage:   { en: "Your application has been reviewed and approved. Welcome to Esaal!", ar: "تمت مراجعة طلبك والموافقة عليه. مرحباً بك في إسأل!" },
+  status_approvedMessage:   { en: "Your application has been reviewed and approved. Welcome to Relax Therapy!", ar: "تمت مراجعة طلبك والموافقة عليه. مرحباً بك في ريلاكس ثيرابي!" },
 
   // ── Doctor reviews on profile ─────────────────────────────────
   profile_patientReviews:   { en: "Patient Reviews",           ar: "تقييمات المرضى" },
@@ -502,7 +502,7 @@ const translations = {
   admin_instantSession:     { en: "Instant session",            ar: "جلسة فورية" },
   admin_createAdmin:        { en: "Create Admin",               ar: "إنشاء مسؤول" },
   admin_createAdminTitle:   { en: "Create new admin account",   ar: "إنشاء حساب مسؤول جديد" },
-  admin_createAdminSub:     { en: "Add another administrator who can manage Esaal.", ar: "أضف مسؤولاً آخر يمكنه إدارة منصة إسأل." },
+  admin_createAdminSub:     { en: "Add another administrator who can manage Relax Therapy.", ar: "أضف مسؤولاً آخر يمكنه إدارة منصة ريلاكس ثيرابي." },
   admin_adminName:          { en: "Full name",                  ar: "الاسم الكامل" },
   admin_adminEmail:         { en: "Email",                      ar: "البريد الإلكتروني" },
   admin_adminPassword:      { en: "Password",                   ar: "كلمة المرور" },
@@ -539,7 +539,7 @@ const translations = {
   reg_submittedTitle:       { en: "Verify Email & Pending Approval",   ar: "توثيق البريد والموافقة معلقة" },
   reg_submittedDesc:        { en: "We've sent a verification link to your email. Please click it to verify your account. Your doctor profile is also pending admin approval before you can log in. You can check your doctor application status when you log in.", ar: "أرسلنا رابط التوثيق لبريدك الإلكتروني، يرجى الضغط عليه لتوثيق الحساب. ملفك الطبي بانتظار موافقة المسؤول قبل أن تتمكن من تسجيل الدخول. يمكنك التحقق من حالة طلبك عند تسجيل الدخول." },
   reg_goToLogin:            { en: "Go to Login",               ar: "اذهب لتسجيل الدخول" },
-  reg_welcomeToast:         { en: "Welcome to Esaal!",         ar: "مرحباً بك في إسأل!" },
+  reg_welcomeToast:         { en: "Welcome to Relax Therapy!",         ar: "مرحباً بك في ريلاكس ثيرابي!" },
   reg_failed:               { en: "Registration Failed",       ar: "فشل التسجيل" },
 
   // ── Extra Admin keys ──────────────────────────────────────────
@@ -614,6 +614,7 @@ const translations = {
   admin_pendingPhoto:       { en: "Pending Photo",            ar: "صورة معلقة" },
   admin_newPhoto:           { en: "New Photo",                ar: "صورة جديدة" },
   common_close:             { en: "Close",                    ar: "إغلاق" },
+  common_support:           { en: "Support",                  ar: "الدعم" },
   _cache_refresh:           { en: "Refresh",                  ar: "تحديث" },
 };
 

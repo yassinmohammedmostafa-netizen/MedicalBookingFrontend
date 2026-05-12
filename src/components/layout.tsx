@@ -5,8 +5,8 @@ import { useLanguage } from "@/lib/language";
 import { useT } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import {
-  LogOut, Activity, Menu, X,
-  LayoutDashboard, Calendar, Clock, Users, ClipboardList, Stethoscope, UserCircle, MessageSquare
+  LayoutDashboard, Calendar, Clock, Users, ClipboardList, Stethoscope, UserCircle, MessageSquare,
+  Leaf, Phone
 } from "lucide-react";
 import { useLogoutUser, useUpdateProfile } from "../../api-client-react/src/index.js";
 import { useQueryClient } from "@tanstack/react-query";
@@ -117,8 +117,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container flex h-16 items-center mx-auto px-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 me-6 shrink-0" onClick={() => setMenuOpen(false)}>
-            <Activity className="h-6 w-6 text-primary" />
-            <span className="font-bold text-xl tracking-tight text-primary">Esaal</span>
+            <Leaf className="h-6 w-6 text-primary" />
+            <span className="font-bold text-xl tracking-tight text-primary">Relax Therapy</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -214,6 +214,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <main className="flex-1">
         {children}
       </main>
+
+      {/* Floating WhatsApp Support Button */}
+      <a
+        href="https://wa.me/201234567890?text=Hello%20Relax%20Therapy%20Support"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 end-6 z-[60] bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform active:scale-95 flex items-center justify-center group"
+        aria-label="WhatsApp Support"
+      >
+        <Phone className="w-6 h-6 fill-current" />
+        <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ms-2 transition-all duration-300 font-medium">
+          {t("common_support") || "Support"}
+        </span>
+      </a>
     </div>
   );
 }
