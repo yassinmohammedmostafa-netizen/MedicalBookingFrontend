@@ -357,7 +357,7 @@ export async function customFetch<T = unknown>(
       headers.set("authorization", `Bearer ${token}`);
     }
   } else if (!headers.has("authorization")) {
-    const token = typeof window !== 'undefined' ? localStorage.getItem("esaal_token") : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem("relax_token") : null;
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
@@ -365,12 +365,25 @@ export async function customFetch<T = unknown>(
 
   const requestInfo = { method, url: resolveUrl(input) };
 
-  const response = await fetch(input, { ...init, method, headers });
+  // Add a default timeout of 30 seconds
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-  if (!response.ok) {
-    const errorData = await parseErrorBody(response, method);
-    throw new ApiError(response, errorData, requestInfo);
+  try {
+    const response = await fetch(input, { 
+      ...init, 
+      method, 
+      headers,
+      signal: init.signal || controller.signal 
+    });
+
+    if (!response.ok) {
+      const errorData = await parseErrorBody(response, method);
+      throw new ApiError(response, errorData, requestInfo);
+    }
+
+    return (await parseSuccessBody(response, responseType, requestInfo)) as T;
+  } finally {
+    clearTimeout(timeoutId);
   }
-
-  return (await parseSuccessBody(response, responseType, requestInfo)) as T;
 }

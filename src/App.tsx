@@ -32,11 +32,9 @@ import AdminReviews from "@/pages/admin/reviews";
 
 const handle401 = (error: any) => {
   if (error?.status === 401) {
-    // Only redirect if we are NOT on the login page
-    // and if we actually have a token to clear.
     const isLoginPage = window.location.pathname === "/login";
-    if (!isLoginPage && localStorage.getItem('esaal_token')) {
-      localStorage.removeItem('esaal_token');
+    if (!isLoginPage && localStorage.getItem('relax_token')) {
+      localStorage.removeItem('relax_token');
       window.location.href = "/login?session=expired";
     }
   }
@@ -51,10 +49,13 @@ const queryClient = new QueryClient({
   }),
   defaultOptions: {
     queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 30, // 30 minutes
       retry: (failureCount, error: any) => {
         if (error?.status === 401) return false;
-        return failureCount < 3;
+        return failureCount < 2;
       },
+      refetchOnWindowFocus: false,
     },
   }
 });

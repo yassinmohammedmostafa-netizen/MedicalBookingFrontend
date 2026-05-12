@@ -14,7 +14,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('esaal_token'));
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem('relax_token'));
   const { setLang } = useLanguage();
 
   const { data: user, isLoading, error } = useGetMe({
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user?.preferredLang]);
 
   const login = (newToken: string, newUser: User) => {
-    localStorage.setItem('esaal_token', newToken);
+    localStorage.setItem('relax_token', newToken);
     setToken(newToken);
     if (newUser.preferredLang) {
       setLang(newUser.preferredLang as Lang);
@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    localStorage.removeItem('esaal_token');
+    localStorage.removeItem('relax_token');
     setToken(null);
     window.location.href = "/";
   };
