@@ -67,7 +67,8 @@ export default function AdminDoctors() {
       if (q && !fullName.includes(q) && !doctor.email.toLowerCase().includes(q)) {
         return false;
       }
-      if (specialty !== "all" && !doctor.specialty.includes(specialty)) {
+      const doctorSpecialties = Array.isArray(doctor.specialty) ? doctor.specialty : (doctor.specialty ? [doctor.specialty] : []);
+      if (specialty !== "all" && !doctorSpecialties.includes(specialty)) {
         return false;
       }
       if (status === "online" && !doctor.isOnline) return false;
@@ -137,8 +138,8 @@ export default function AdminDoctors() {
     setEditingDoctor(doctor);
     setEditForm({ 
       price: doctor.price, 
-      specialty: Array.isArray(doctor.specialty) ? doctor.specialty : [doctor.specialty],
-      isOnline: doctor.isOnline
+      specialty: Array.isArray(doctor.specialty) ? doctor.specialty : (doctor.specialty ? [doctor.specialty] : []),
+      isOnline: !!doctor.isOnline
     });
   };
 
@@ -253,7 +254,7 @@ export default function AdminDoctors() {
                       </TableCell>
                       <TableCell>
                         <div className="font-medium capitalize">{doctor.type}</div>
-                        <div className="text-xs text-muted-foreground">{doctor.specialty.join(", ")}</div>
+                        <div className="text-xs text-muted-foreground">{(Array.isArray(doctor.specialty) ? doctor.specialty : (doctor.specialty ? [doctor.specialty] : [])).join(", ")}</div>
                       </TableCell>
                       <TableCell>
                         <div className="font-medium">{t("common_egp")} {doctor.price}</div>
@@ -494,8 +495,8 @@ export default function AdminDoctors() {
                               setEditingDoctor(doctor);
                               setEditForm({
                                 price: doctor.price,
-                                specialty: doctor.specialty,
-                                isOnline: doctor.isOnline,
+                                specialty: Array.isArray(doctor.specialty) ? doctor.specialty : (doctor.specialty ? [doctor.specialty] : []),
+                                isOnline: !!doctor.isOnline,
                               });
                             }}
                           >
